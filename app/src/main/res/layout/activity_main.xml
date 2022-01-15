@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+        android:id="@+id/youtube_player_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="300dp"
+        android:layout_marginBottom="150dp"
+        app:enableAutomaticInitialization="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/qrView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#01282f"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/youtube_player_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/youtube_player_view"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"></RelativeLayout>
+
+        <TextView
+            android:id="@+id/connectionText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="ချိတ်ဆက်ရန် Scan ဖတ်ပါ"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24dp" />
+
+        <FrameLayout
+            android:id="@+id/idIVQrcodeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/scanner_view">
+
+            <ImageView
+                android:id="@+id/idIVQrcode"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="50dp"
+                android:contentDescription="@string/qr_code" />
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tokenInfoView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="#01282f"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/youtube_player_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/youtube_player_view"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="30dp">
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/currentTokenLabel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:text="ပြသနေသော တိုကင်"
+            android:textAlignment="textStart"
+            android:textColor="@color/white"
+            android:textSize="24dp" />
+
+        <TextView
+            android:id="@+id/current_token"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/current_token_view"
+            android:text="Nil"
+            android:textAlignment="center"
+            android:textColor="#00b600"
+            android:textSize="90dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/nextTokenLabel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="10dp"
+            android:text="လာမည့် တိုကင်"
+            android:textAlignment="textStart"
+            android:textColor="@color/white"
+            android:textSize="24dp" />
+
+        <TextView
+            android:id="@+id/next_token"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/next_token_view"
+            android:text="Nil"
+            android:textAlignment="center"
+            android:textColor="#FF1616"
+            android:textSize="90dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textDate"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:textColor="#00b600"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/view3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#01282f"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/youtube_player_view">
+
+        <TextView
+            android:id="@+id/current_doctor"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:text="Nil"
+            android:textColor="#00dc06"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/infoText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:fontFamily="serif"
+            android:text="ဆေးရုံသို့ရောက်လျှင်ရောက်ချင်း Reception သို့ဦးစွာအကြောင်းကြားပါ။ ကျေးဇူးပြု၍ မိမိ၏အလှည့်မရောက်မီ (၃)ဦးအလိုတွင် အသင့်ကြိုတင်နေရာယူပေးပါ။ မိမိတိုကင် အလှည့်ကျော်လွန်သွားပါက (၃)ဦးခန့် ပြန်လည်စောင့်ပေးပါ။ ကျေးဇူးတင်ပါတယ်ရှင်။"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
+            android:fontFamily="serif"
+            android:text="Powered By Token Doctor"
+            android:textAlignment="textEnd"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
