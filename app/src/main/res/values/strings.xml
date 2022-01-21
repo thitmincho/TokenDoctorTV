@@ -1,16 +1,14 @@
 <resources>
-    <string name="app_name">Token Doctor</string>
+    <string name="app_name">Token Doctor TV</string>
     <string name="title_activity_qractivity">QRActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <string name="qr_code">qr_code</string>
     <string name="enter_your_info">Enter your info</string>
     <string name="generate_qr_code">Generate QR Code</string>
+
+    <string name="scan_qr">ခ်ိတ္ဆက္ရန္ Scan ဖတ္ပါ။</string>
+    <string name="current_token_label_text">ျပသေနေသာ တိုကင္</string>
+    <string name="next_token_label_text">လာမည့္ တိုကင္</string>
+    <string name="info_text">ေဆး႐ုံသို႔ေရာက္လွ်င္ေရာက္ခ်င္း Reception သို႔ဦးစြာအေၾကာင္းၾကားပါ။ ေက်းဇူးျပဳ၍ မိမိ၏အလွည့္မေရာက္မီ (၃)ဦးအလိုတြင္ အသင့္ႀကိဳတင္ေနရာယူေပးပါ။ မိမိတိုကင္ အလွည့္ေက်ာ္လြန္သြားပါက (၃)ဦးခန္႔ ျပန္လည္ေစာင့္ေပးပါ။ ေက်းဇူးတင္ပါတယ္ရွင္။</string>
+    <string name="hello">မဂၤလာပါ</string>
 </resources>

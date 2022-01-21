@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Token Doctor TV</string>
+    <string name="title_activity_qractivity">QRActivity</string>
+
+    <string name="qr_code">qr_code</string>
+    <string name="enter_your_info">Enter your info</string>
+    <string name="generate_qr_code">Generate QR Code</string>
+
+    <string name="scan_qr">ချိတ်ဆက်ရန် Scan ဖတ်ပါ။</string>
+    <string name="current_token_label_text">ပြသနေသော တိုကင်</string>
+    <string name="next_token_label_text">လာမည့် တိုကင်</string>
+    <string name="info_text">ဆေးရုံသို့ရောက်လျှင်ရောက်ချင်း Reception သို့ဦးစွာအကြောင်းကြားပါ။ ကျေးဇူးပြု၍ မိမိ၏အလှည့်မရောက်မီ (၃)ဦးအလိုတွင် အသင့်ကြိုတင်နေရာယူပေးပါ။ မိမိတိုကင် အလှည့်ကျော်လွန်သွားပါက (၃)ဦးခန့် ပြန်လည်စောင့်ပေးပါ။ ကျေးဇူးတင်ပါတယ်ရှင်။</string>
+    <string name="hello">မင်္ဂလာပါ</string>
+
+</resources>

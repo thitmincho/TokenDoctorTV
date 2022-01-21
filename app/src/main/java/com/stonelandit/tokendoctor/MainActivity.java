@@ -10,7 +10,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -45,6 +47,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 import com.stonelandit.tokendoctor.Interface.TVInterface;
 import com.stonelandit.tokendoctor.helper.DBManager;
 import com.stonelandit.tokendoctor.helper.Helpers;
+import com.stonelandit.tokendoctor.helper.LocaleHelper;
 import com.stonelandit.tokendoctor.helper.RetrofitInstance;
 
 import org.json.JSONArray;
@@ -77,7 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
     private DBManager dbManager;
     private String generatedToken;
-
+    Context context;
+    Resources resources;
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -97,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         qrView = (LinearLayout) findViewById(R.id.qrView);
         tokenInfoView = (LinearLayout) findViewById(R.id.tokenInfoView);
         idIVQrcodeLayout = (FrameLayout) findViewById(R.id.idIVQrcodeLayout);
-        connectionText= (TextView) findViewById(R.id.connectionText);
+        connectionText = (TextView) findViewById(R.id.connectionText);
         currentTokenLabel = (TextView) findViewById(R.id.currentTokenLabel);
         nextTokenLabel = (TextView) findViewById(R.id.nextTokenLabel);
         currentDoctor = (TextView) findViewById(R.id.current_doctor);
@@ -120,6 +124,19 @@ public class MainActivity extends AppCompatActivity {
         this.serverThread = new Thread(new ServerThread());
         this.serverThread.start();
 
+        if(Helpers.getSelectedLang()==0){
+            context = LocaleHelper.setLocale(MainActivity.this, "en");
+            resources = context.getResources();
+            currentTokenLabel.setText(resources.getString(R.string.current_token_label_text));
+            nextTokenLabel.setText(resources.getString(R.string.next_token_label_text));
+            infoText.setText(resources.getString(R.string.info_text));
+        }else{
+            context = LocaleHelper.setLocale(MainActivity.this, "");
+            resources = context.getResources();
+            currentTokenLabel.setText(resources.getString(R.string.current_token_label_text));
+            nextTokenLabel.setText(resources.getString(R.string.next_token_label_text));
+            infoText.setText(resources.getString(R.string.info_text));
+        }
     }
 
     @Override
@@ -141,18 +158,18 @@ public class MainActivity extends AppCompatActivity {
 //        dateDisplay.setVisibility(status);
         currentDoctor.setVisibility(status);
         infoText.setVisibility(status);
-        if(status == View.VISIBLE){
+        if (status == View.VISIBLE) {
             qrView.setVisibility(View.INVISIBLE);
 //            connectionText.setVisibility(View.INVISIBLE);
 //            idIVQrcodeLayout.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             qrView.setVisibility(View.VISIBLE);
 //            connectionText.setVisibility(View.VISIBLE);
 //            idIVQrcodeLayout.setVisibility(View.VISIBLE);
         }
     }
 
-    private void changeInfos(){
+    private void changeInfos() {
         currentDoctor.setText("Nil");
         currentToken.setText("Nil");
         nextToken.setText("Nil");
@@ -252,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
                     } else if (Helpers.checkToken(dbManager, parseData.getString("tvToken"), "1") && parseData.getString("method").equals("disconnect")) {
                         out.println(Helpers.responseSuccess("Disconnect Success"));
                         updateConversationHandler.post(new updateUIThread(payloadData));
-                    }else if (Helpers.checkToken(dbManager, parseData.getString("tvToken"), "0")) {
+                    } else if (Helpers.checkToken(dbManager, parseData.getString("tvToken"), "0")) {
                         out.println(Helpers.responseSuccess("Login Success"));
                         updateConversationHandler.post(new updateUIThread(payloadData));
                     } else {
@@ -287,39 +304,42 @@ public class MainActivity extends AppCompatActivity {
                 if (parseData.getString("method").equals("tv-change")) {
                     JSONObject dataValues = parseData.getJSONObject("data");
 
-                    String curret = "";
+                    String current = "";
                     String next = "";
-                    if(dataValues.has("currentToken") && !dataValues.getJSONObject("currentToken").getString("token").equals(currentToken.getText())){
-                        curret = dataValues.getJSONObject("currentToken").getString("token");
-                        Helpers.blinkAnim(currentToken, Color.WHITE,Color.parseColor("#5271FF"),Color.parseColor("#7DD957"),Color.WHITE,30000);
-                    }else{
-                        curret = "Nil";
+
+                    if (dataValues.has("currentToken")) {
+                        current = dataValues.getJSONObject("currentToken").getString("token");
                     }
-                    if(dataValues.has("nextToken") && !dataValues.getJSONObject("nextToken").getString("token").equals(nextToken.getText())){
+                    if (dataValues.has("nextToken")) {
                         next = dataValues.getJSONObject("nextToken").getString("token");
-                        Helpers.blinkAnim(nextToken, Color.WHITE,Color.parseColor("#CFCECE"),Color.parseColor("#FF1616"),Color.WHITE,30000);
-                    }else{
-                        next = "Nil";
+                    }
+
+                    if (!current.equals(currentToken.getText())) {
+
+                        Helpers.blinkAnim(currentToken, Color.WHITE, Color.parseColor("#5271FF"), Color.parseColor("#7DD957"), Color.WHITE, 30000);
+                    }
+                    if (!next.equals(nextToken.getText())) {
+
+                        Helpers.blinkAnim(nextToken, Color.WHITE, Color.parseColor("#CFCECE"), Color.parseColor("#FF1616"), Color.WHITE, 30000);
                     }
                     currentDoctor.setText(dataValues.getJSONObject("currentDoctor").getString("doctor_name"));
-                    currentToken.setText(curret);
+//                    currentToken.setText(curret);
+//                    nextToken.setText(next);
+                    currentToken.setText(current);
                     nextToken.setText(next);
 
 
-
-
-
                     getTvResponse(parseData.getString("accessToken"));
-                }else if (parseData.getString("method").equals("disconnect")) {
+                } else if (parseData.getString("method").equals("disconnect")) {
                     System.out.println("Disconnecting");
                     dbManager.delete(1);
 
                     hideShowTokenInfos(View.INVISIBLE);
                     changeInfos();
                     generatedToken = Helpers.tokenGenerate();
-                    Helpers.initSection(generatedToken,dbManager);
-                    Helpers.qrGenerate(getBaseContext(),qrCodeIV,generatedToken);
-                }else{
+                    Helpers.initSection(generatedToken, dbManager);
+                    Helpers.qrGenerate(getBaseContext(), qrCodeIV, generatedToken);
+                } else {
                     hideShowTokenInfos(View.VISIBLE);
                 }
 

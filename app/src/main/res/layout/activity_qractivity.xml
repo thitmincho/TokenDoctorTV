@@ -39,10 +39,8 @@
             android:contentDescription="@string/qr_code" />
     </FrameLayout>
 
-
-
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/qrScanText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ချိတ်ဆက်ရန် Scan ဖတ်ပါ။"
@@ -63,6 +61,29 @@
         android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/qrScanText" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnMMFont"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginRight="10dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="MM Font"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        android:backgroundTint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

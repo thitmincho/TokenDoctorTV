@@ -1,16 +1,35 @@
 package com.stonelandit.tokendoctor;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.TransitionDrawable;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.stonelandit.tokendoctor.helper.DBManager;
 import com.stonelandit.tokendoctor.helper.Helpers;
+import com.stonelandit.tokendoctor.helper.LocaleHelper;
 
 import org.json.JSONObject;
 
@@ -23,17 +42,24 @@ import java.net.Socket;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
+
 public class QRActivity extends AppCompatActivity {
     private ImageView qrCodeIV;
     private DBManager dbManager;
 
     private Animation blink_anim;
+    private TextView textview;
+    private TextView qrScanText;
     private String generatedToken;
-
+    private Button btnMMFont;
     private ServerSocket serverSocket;
     private Handler updateConversationHandler;
     private Thread serverThread = null;
     public static final int SERVERPORT = 5000;
+
+    int lang_selected;
+    Context context;
+    Resources resources;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +69,9 @@ public class QRActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN); //enable full screen
         setContentView(R.layout.activity_qractivity);
+
+        btnMMFont = (Button) findViewById(R.id.btnMMFont);
+        qrScanText = (TextView) findViewById(R.id.qrScanText);
         // qrCodeIV view element Call
         qrCodeIV = findViewById(R.id.idIVQrcode);
         // Socket Thread Handler start
@@ -53,13 +82,57 @@ public class QRActivity extends AppCompatActivity {
 
         dbManager = new DBManager(this);
         dbManager.open();
-//        textView.setText(Helpers.random());
-        generatedToken = Helpers.tokenGenerate();
-        Helpers.initSection(generatedToken,dbManager);
-        Helpers.qrGenerate(this,qrCodeIV,generatedToken);
-//        textView.startAnimation(blink_anim);
 
-//Helpers.blinkAmin(textView);
+        generatedToken = Helpers.tokenGenerate();
+        Helpers.initSection(generatedToken, dbManager);
+
+        Helpers.showNetworkStatus(this, qrCodeIV, generatedToken);
+
+        textview = findViewById(R.id.textView3);
+
+        btnMMFont.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                final String[] Language = {"Unicode\t: ဖတ်၍ရသော Font ကို ရွေးချယ်ပါ။", "Zawgyi\t: ဖတ္၍ရေသာ Font ကို ေ႐ြးခ်ယ္ပါ"};;
+                final int checkItem;
+                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(QRActivity.this);
+                dialogBuilder.setTitle("Select a Language")
+                        .setSingleChoiceItems(Language, lang_selected, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                if(i==0){
+                                    context = LocaleHelper.setLocale(QRActivity.this, "en");
+                                    resources = context.getResources();
+                                    lang_selected = 0;
+                                    qrScanText.setText(resources.getString(R.string.scan_qr));
+                                }
+                                if(i==1){
+                                    context = LocaleHelper.setLocale(QRActivity.this, "");
+                                    resources = context.getResources();
+                                    lang_selected = 1;
+                                    qrScanText.setText(resources.getString(R.string.scan_qr));
+                                }
+                                Helpers.setSelectedLang(lang_selected);
+//                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                dialogBuilder.create().show();
+            }
+        });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     @Override
@@ -97,6 +170,7 @@ public class QRActivity extends AppCompatActivity {
             }
         }
     }
+
     class CommunicationThread implements Runnable {
 
         private Socket clientSocket;

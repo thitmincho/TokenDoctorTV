@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3828125" />
         <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/drawable/current_token_view.xml" value="0.3828125" />
+        <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/drawable/current_token_view_blink.xml" value="0.3828125" />
         <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/drawable/fade_in.xml" value="0.3828125" />
         <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/drawable/fade_out.xml" value="0.3828125" />
         <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/drawable/ic_launcher_background.xml" value="0.3828125" />
@@ -12,9 +13,11 @@
         <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/drawable/next_token_view.xml" value="0.3828125" />
         <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/drawable/rounded_corner_view.xml" value="0.3828125" />
         <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/drawable/scanner_view.xml" value="0.3828125" />
+        <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/drawable/transition.xml" value="0.2125" />
         <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/layout/activity_main.xml" value="0.22" />
-        <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/layout/activity_qractivity.xml" value="0.5" />
+        <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/layout/activity_qractivity.xml" value="0.33" />
         <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.3828125" />
+        <entry key="..\:/Project/TokenDoctor/TokenDoctor/app/src/main/res/mipmap-anydpi-v26/ic_td_logo.xml" value="0.2125" />
       </map>
     </option>
   </component>

@@ -1,9 +1,12 @@
 package com.stonelandit.tokendoctor.helper;
 
+import android.animation.AnimatorSet;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.GradientDrawable;
@@ -19,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.zxing.WriterException;
-import com.stonelandit.tokendoctor.R;
 
 import java.util.Random;
 
@@ -32,6 +34,18 @@ public class Helpers {
     private static final int MAX_LENGTH = 10;
     private static QRGEncoder qrgEncoder;
     private static Bitmap bitmap;
+
+    private static AlertDialog.Builder builder;
+    private static int selectedLang;
+
+    public static void setSelectedLang(int selectedLang) {
+        Helpers.selectedLang = selectedLang;
+    }
+
+    public static int getSelectedLang() {
+        return selectedLang;
+    }
+
     public static String tokenGenerate() {
         final Random random = new Random();
         final StringBuilder sb = new StringBuilder(MAX_LENGTH);
@@ -61,7 +75,43 @@ public class Helpers {
         dbManager.insert(generatedToken, false);
     }
 
-    public static void qrGenerate(Context context,ImageView qrCodeIV,String generatedToken) {
+    public static boolean checkIP(Context context) {
+        if (Helpers.IpAddress(context).equals("0.0.0.0") || Helpers.IpAddress(context).equals("127.0.0.1")) {
+            return false;
+        }
+        return true;
+    }
+
+    public static void showNetworkStatus(Context context, ImageView qrCodeIV, String generatedToken) {
+        builder = new AlertDialog.Builder(context);
+        if (!Helpers.checkIP(context)) {
+//            builder.setMessage("No Internet Connect") .setTitle("Network Status");
+
+            //Setting message manually and performing action on button click
+            builder.setMessage("Wifi ချိတ်ဆက်ပီးလျှင် Refresh ပြန်နှိပ်ပါ။")
+                    .setCancelable(false)
+                    .setPositiveButton("Refresh", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            if (!Helpers.checkIP(context)) {
+
+                                showNetworkStatus(context, qrCodeIV, generatedToken);
+                            }
+                            Helpers.qrGenerate(context, qrCodeIV, generatedToken);
+                        }
+                    });
+            //Creating dialog box
+            AlertDialog alert = builder.create();
+            //Setting the title manually
+            alert.setTitle("Wifi မချိတ်ဆက်ထားပါ");
+
+            alert.show();
+        } else {
+            Helpers.qrGenerate(context, qrCodeIV, generatedToken);
+        }
+    }
+
+    public static void qrGenerate(Context context, ImageView qrCodeIV, String generatedToken) {
         // below line is for getting
         // the windowmanager service.
         WindowManager manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -105,26 +155,36 @@ public class Helpers {
 
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
+        System.out.println(cm.getActiveNetworkInfo());
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
 
-    public static void blinkAnim(TextView textView,int primaryBgColor,int secondaryBgColor,int primaryTxtColor,int secondaryTxtColor, int delayMillis) {
+    public static void blinkAnim(TextView textView, int primaryBgColor, int secondaryBgColor, int primaryTxtColor, int secondaryTxtColor, int delayMillis) {
 
-        ObjectAnimator bgAnim = ObjectAnimator.ofInt(textView, "backgroundColor", primaryBgColor, secondaryBgColor,primaryBgColor);
-        ObjectAnimator textAnim = ObjectAnimator.ofInt(textView, "textColor", primaryTxtColor, secondaryTxtColor,primaryTxtColor);
+        ObjectAnimator textAnim = ObjectAnimator.ofInt(textView, "textColor", primaryTxtColor, secondaryTxtColor, primaryTxtColor);
 
-        animStart(bgAnim).start();
-        animStart(textAnim).start();
+        GradientDrawable gd = (GradientDrawable) textView.getBackground();
+
+        ValueAnimator animator = ValueAnimator.ofObject(new ArgbEvaluator(), primaryBgColor, secondaryBgColor, primaryBgColor);
+        animator.setRepeatCount(Animation.REVERSE);
+        animator.setRepeatCount(Animation.INFINITE);
+        animator.setDuration(2000).addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int value = (int) animation.getAnimatedValue();
+                gd.setColor(value);
+            }
+        });
+
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(animStart(textAnim), animator);
+        set.start();
 
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                bgAnim.end();
-                textAnim.end();
-                textView.setBackgroundColor(primaryBgColor);
-                textView.setTextColor(primaryTxtColor);
+                set.end();
             }
         }, delayMillis);
     }
